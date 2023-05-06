@@ -10,15 +10,17 @@
     "lint:quiet": "eslint -c ./lib/eslint/eslintrc.json ./src/ts/* --quiet",
     "start": "npm run clean && webpack-dev-server --mode development --config ./lib/webpack/webpack.config.js",
     "build": "npm run clean && webpack --mode production --config ./lib/webpack/prod.webpack.config.js",
-    "test": "jest --config=./lib/jest/jest.config.json",
-    "test:watch": "jest --config=./lib/jest/jest.config.json --watchAll"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "author": "DefiantBidet <James Dean>",
   "license": "ISC",
   "dependencies": {
+    "grommet": "2.32.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "recharts": "2.5.0"
+    "recharts": "2.5.0",
+    "styled-components": "5.3.10"
   },
   "devDependencies": {
     "@babel/core": "7.21.8",
@@ -36,7 +38,6 @@
     "@types/webpack": "5.28.1",
     "babel-loader": "9.1.2",
     "babel-plugin-module-resolver": "5.0.0",
-    "copy-webpack-plugin": "^11.0.0",
     "eslint": "8.40.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-plugin-import": "2.27.5",

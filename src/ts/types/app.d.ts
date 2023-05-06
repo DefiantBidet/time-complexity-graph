@@ -6,3 +6,8 @@ export const enum FooBarBaz {
 }
 
 export type StatusEnum = keyof typeof FooBarBaz;
+
+export interface ChartNode {
+  iterationCount: number;
+  timeValue: number;
+}
