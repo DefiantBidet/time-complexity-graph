@@ -1,0 +1,8 @@
+
+export const enum FooBarBaz {
+  FOO = 'Foo',
+  BAR = 'Bar',
+  BAZ = 'Baz',
+}
+
+export type StatusEnum = keyof typeof FooBarBaz;
