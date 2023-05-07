@@ -1,4 +1,4 @@
-import ListNode from './ListNode';
+import ListNode, { CustomToStringFunction } from './ListNode';
 
 /**
  * [description]
@@ -21,28 +21,9 @@ export default class LinkedList {
   }
 
   /**
-   * Prepend value to beginning of Linked List
-   * @param   {any} value   Value to be added to the Linked List
-   * @return  {LinkedList}  self
-   * @function
-   */
-  prepend(value: any): this {
-    const newNode: ListNode = new ListNode(value, this.head);
-    this.head = newNode;
-
-    // if tail not present/new list - create tail
-    if (!this.tail) {
-      this.tail = newNode;
-    }
-
-    return this;
-  }
-
-  /**
    * Append value to end of Linked List
    * @param   {any} value   Value to be added to the Linked List
    * @return  {LinkedList}  self
-   * @function
    */
   append(value: any): this {
     const newNode: ListNode = new ListNode(value);
@@ -65,11 +46,27 @@ export default class LinkedList {
   }
 
   /**
+   * Prepend value to beginning of Linked List
+   * @param   {any} value   Value to be added to the Linked List
+   * @return  {LinkedList}  self
+   */
+  prepend(value: any): this {
+    const newNode: ListNode = new ListNode(value, this.head);
+    this.head = newNode;
+
+    // if tail not present/new list - create tail
+    if (!this.tail) {
+      this.tail = newNode;
+    }
+
+    return this;
+  }
+
+  /**
    * Insert value into Linked List at supplied index position.
    * @param   {any}         value  Value to be added to the Linked List
    * @param   {number}      index  Index position to add value to Linked List
    * @return  {LinkedList}         self
-   * @function
    */
   insert(value: any, index: number): this {
     // if supplied index is less than zero - use zero for prepending
@@ -104,11 +101,11 @@ export default class LinkedList {
       // not found - add to end or initialize list
       if (this.tail) {
         this.tail.next = newNode;
-        this.tail = newNode;
       } else {
         this.head = newNode;
-        this.tail = newNode;
       }
+
+      this.tail = newNode;
     }
 
     return this;
@@ -118,7 +115,6 @@ export default class LinkedList {
    * Deletes value from Linked List
    * @param   {any} value Value to be removed from the Linked List
    * @return  {ListNode}  self
-   * @function
    */
   delete(value: any): ListNode | null {
     if (!this.head) {
@@ -152,52 +148,6 @@ export default class LinkedList {
     }
 
     return deletedNode;
-  }
-
-  /**
-   * Finds ListNode by value or customMatcher
-   *
-   * By value = if the `value` member of the CustomFindOptions
-   * is supplied, a strict equality comparison is done on each iteration
-   * of the LinkedList until found. Returning the ListNode if found,
-   * or null if not found.
-   *
-   * By custom function - if the `findCallback` member of the
-   * CustomFindOptions is supplied, the callback function is invoked
-   * for each iteration of the LinkedList. The callback function
-   * should return a boolean indicating whether it matches or not.
-   *
-   * @param   {any}                value         Value to strictly compare
-   * @param   {CustomFindOptions}  findCallback  Matching method to apply
-   * @return  {ListNode | null}                  ListNode if found, null if not found
-   * @function
-   */
-  find({ value = undefined, findCallback = undefined }: CustomFindOptions): ListNode | null {
-    // LinkedList not initialized - nothing to find
-    if (!this.head) {
-      return null;
-    }
-
-    // cache current head and iterate through LinkedList
-    // invoking callback or comparing values on each iteration
-    let currentNode: ListNode | null = this.head;
-
-    while(currentNode) {
-      // via findCallback
-      if (findCallback && findCallback(currentNode.value)) {
-        return currentNode;
-      }
-
-      // via value comparison
-      if (value && value === currentNode.value) {
-        return currentNode;
-      }
-
-      currentNode = currentNode.next;
-    }
-
-    // not found
-    return null;
   }
 
   /**
@@ -253,13 +203,115 @@ export default class LinkedList {
 
     return deletedNode;
   }
-  // deleteHead() {}
 
-  // fromArray(values) {}
+  /**
+   * Finds ListNode by value or customMatcher
+   *
+   * By value = if the `value` member of the CustomFindOptions
+   * is supplied, a strict equality comparison is done on each iteration
+   * of the LinkedList until found. Returning the ListNode if found,
+   * or null if not found.
+   *
+   * By custom function - if the `findCallback` member of the
+   * CustomFindOptions is supplied, the callback function is invoked
+   * for each iteration of the LinkedList. The callback function
+   * should return a boolean indicating whether it matches or not.
+   *
+   * @param   {any}                value         Value to strictly compare
+   * @param   {CustomFindOptions}  findCallback  Matching method to apply
+   * @return  {ListNode | null}                  ListNode if found, null if not found
+   */
+  find({ value = undefined, findCallback = undefined }: CustomFindOptions): ListNode | null {
+    // LinkedList not initialized - nothing to find
+    if (!this.head) {
+      return null;
+    }
 
-  // toArray() {}
+    // cache current head and iterate through LinkedList
+    // invoking callback or comparing values on each iteration
+    let currentNode: ListNode | null = this.head;
 
-  // toString(callback) {}
+    while(currentNode) {
+      // via findCallback
+      if (findCallback && findCallback(currentNode.value)) {
+        return currentNode;
+      }
 
-  // reverse() {}
+      // via value comparison
+      if (value && value === currentNode.value) {
+        return currentNode;
+      }
+
+      currentNode = currentNode.next;
+    }
+
+    // not found
+    return null;
+  }
+
+  /**
+   * Reverses the order of the LinkedList
+   * @return  {LinkedList}  self
+   */
+  reverse(): this {
+    let currentNode = this.head;
+    let previousNode = null;
+    let nextNode = null;
+
+    while (currentNode) {
+      // cache next node
+      nextNode = currentNode.next;
+
+      // change reference of `currentNode.next` to previousNode
+      currentNode.next = previousNode;
+
+      // move previousNode and currentNode forward in LinkedList
+      previousNode = currentNode
+      currentNode = nextNode;
+    }
+
+    // reset head and tail
+    this.tail = this.head;
+    this.head = previousNode;
+
+    return this;
+  }
+
+  /**
+   * Creates a LinkedList from an array by iterating
+   * over array and appending to LinkedList
+   * @param   {any[]}       values  Array to iterate over
+   * @return  {LinkedList}          self
+   */
+  fromArray(values: any[]): this {
+    values.forEach((value: any) => this.append(value));
+    return this;
+  }
+
+  /**
+   * Converts LinkedList to an Array of ListNodes
+   * @return  {ListNode[]}  Array of ListNode objects
+   */
+  toArray(): ListNode[] {
+    const nodes = [];
+
+    let currentNode = this.head;
+    while (currentNode) {
+      nodes.push(currentNode);
+      currentNode = currentNode.next;
+    }
+
+    return nodes;
+  }
+
+  /**
+   * Returns a string representation of the LinkedList
+   * @param   {CustomToStringFunction}  toStringImplementation  Custom toString method for ListNode
+   * @return  {string}                                          String representation of LinkedList
+   */
+  toString(toStringImplementation?: CustomToStringFunction): string {
+    return this.toArray()
+      .map((node: ListNode) => node.toString(toStringImplementation))
+      .join(', ');
+  }
 }

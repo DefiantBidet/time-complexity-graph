@@ -17,21 +17,21 @@ describe('<Chart />', () => {
     ],
   };
 
-  test('Should render wrapper element', () => {
+  test('Chart should render wrapper element', () => {
     render(<Chart {...mockChartProps} />);
 
     const rechartsWrapper = document.querySelector('div.recharts-wrapper');
     expect(rechartsWrapper).toBeInTheDocument();
   });
 
-  test('Should render a Line Chart', () => {
+  test('Chart should render a Line Chart', () => {
     render(<Chart {...mockChartProps} />);
 
     const svgElement = document.querySelector('div.recharts-wrapper g.recharts-line');
     expect(svgElement).toBeInTheDocument();
   });
 
-  test('Should render a Y-Axis label', () => {
+  test('Chart should render a Y-Axis label', () => {
     render(<Chart {...mockChartProps} />);
 
     const textElement = document.querySelector('div.recharts-wrapper g.yAxis > text > tspan');
@@ -39,7 +39,7 @@ describe('<Chart />', () => {
     expect(textElement?.innerHTML).toBe('Execution Time');
   });
 
-  test('Should render an X-Axis label', () => {
+  test('Chart should render an X-Axis label', () => {
     render(<Chart {...mockChartProps} />);
 
     const textElement = document.querySelector('div.recharts-wrapper g.xAxis > text > tspan');
@@ -47,7 +47,7 @@ describe('<Chart />', () => {
     expect(textElement?.innerHTML).toBe('Run Count');
   });
 
-  test('Should render the background gradient', () => {
+  test('Chart should render the background gradient', () => {
     render(<Chart {...mockChartProps} />);
 
     const divElement = document.querySelector('#chart-background-gradient');

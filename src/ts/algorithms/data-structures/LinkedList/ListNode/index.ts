@@ -1,5 +1,5 @@
 
-export interface CustomToStringFunction { (nodeValue: any): string}
+export interface CustomToStringFunction { (nodeValue: any): string }
 
 /**
  * Node Implementation for Linked List
@@ -15,12 +15,12 @@ export default class ListNode {
 
   /**
    * Stringifies data contained in value
-   * @param  {any}     callbackFn  Callback to stringify referential types
-   * @return {string}              Value as string
+   * @param  {any}     toStringImplementation Callback to stringify referential types
+   * @return {string}                         Value as string
    */
-  toString(callbackFn?: CustomToStringFunction): string {
-    if (callbackFn) {
-      return callbackFn(this.value);
+  toString(toStringImplementation?: CustomToStringFunction): string {
+    if (toStringImplementation) {
+      return toStringImplementation(this.value);
     }
 
     return `${this.value}`;

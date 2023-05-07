@@ -14,5 +14,18 @@
   "testRegex": "\\.spec\\.tsx?",
   "transform": {
     "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
-  }
+  },
+  "coverageThreshold": {
+    "global": {
+      "branches": 90,
+      "functions": 90,
+      "lines": 90,
+      "statements": 90
+    }
+  },
+  "collectCoverageFrom": [
+      "**/src/ts/**/*.ts",
+      "**/src/ts/**/*.tsx"
+    ],
+    "coverageDirectory": "<rootDir>/coverage"
 }
