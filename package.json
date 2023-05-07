@@ -15,7 +15,7 @@
     "test:watch": "NODE_ENV=test jest --watchAll"
   },
   "author": "DefiantBidet <James Dean>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "grommet": "2.32.0",
     "react": "18.2.0",
