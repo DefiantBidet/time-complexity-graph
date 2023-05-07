@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { Grommet } from 'grommet';
 
 import applicationTheme from './theme';
@@ -14,10 +14,9 @@ import { ChartNode } from 'Types/app';
 export default function App(): JSX.Element {
 
   // When the component mounts ...
-  useEffect(() => {
-    console.log('App mounted!');
-  }, []);
-
+  // useEffect(() => {
+  //   console.log('App mounted!');
+  // }, []);
 
   // FIXME: temporary data
   const chartData: ChartNode[] = [

@@ -1,7 +1,8 @@
 import ListNode, { CustomToStringFunction } from './ListNode';
 
 /**
- * [description]
+ * CustomFindOptions describes the parameter options for
+ * finding a ListNode in the LinkedList
  */
 export interface CustomFindOptions {
   value?: any;
@@ -9,7 +10,9 @@ export interface CustomFindOptions {
 }
 
 /**
- * LinkedList Implementation
+ * LinkedList
+ * Creates a data type that represents a list of Nodes pointing
+ * to the next Node in the LinkedList
  */
 export default class LinkedList {
   head: ListNode | null;

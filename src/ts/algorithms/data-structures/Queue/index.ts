@@ -1,151 +1,72 @@
-// `protected` queue Symbol
-const queue = Symbol('queueData');
+import LinkedList from "../LinkedList";
+import { CustomToStringFunction } from "../LinkedList/ListNode";
 
 /**
  * Creates a Queue DataType.
  * A classic representation of a First-In-First-Out data structure.
+ * This implementation uses a LinkedList
  */
-class Queue {
-  /**
-   * Constructs a classic Queue representation
-   * @param  {Iterable} Iterable  (Optional) Iterable to populate queue
-   * @return {Queue}              First-In, First-Out Queue
-   */
-  constructor(iterable) {
-    // instance of queue Symbol
-    this[queue] = [];
+export default class Queue {
+  linkedList: LinkedList;
 
-    // check for iterable constructor argument
-    if (iterable) {
-      // loop through iterable and enqueue any item
-      for (const item of iterable) {
-        this.enqueue(item);
-      }
-    }
+  constructor() {
+    this.linkedList = new LinkedList();
   }
 
   /**
-   * Returns the size of the Queue
-   * @return {Number} One-based Integer of Queue length
+   * Returns a boolean value indicating whether the queue is empty or not.
+   * This is determined by the head of the linked list being null if empty.
+   * @return  {boolean} Boolean representing if queue is empty or not
    */
-  get size() {
-    return this[queue].length;
+  isEmpty(): boolean {
+    return !this.linkedList.head;
+  }
+
+  /**
+   * Look into queue and return first item
+   * @return  {any}  Value of last item in queue
+   */
+  peek(): any | null {
+    // return null if queue is empty
+    if (this.isEmpty()) {
+      return null;
+    }
+
+    return this.linkedList.head?.value;
   }
 
   /**
    * Add an item to the Queue
-   * @param  {*}      item  Adds a <DataType> to the end of the Queue
-   * @return {Queue}        The Queue instance for chaining
+   * @param  {any}    value Value to add to the end of the Queue
+   * @return {Queue}        self
    */
-  enqueue(item) {
-    // add item to queue
-    this[queue].push(item);
-
-    // return instance for chaining
+  enqueue(value: any): this {
+    this.linkedList.append(value);
     return this;
   }
 
   /**
-   * Removes and item from the Queue
-   * @return {*}            The first item in the Queue
+   * Removes first value from the Queue
+   * @return  {any | null}  Value of removed item in queue or null
    */
-  dequeue() {
-    // Throw error if attempting to dequeue an empty queue
-    if(this.isEmpty()) {
-      throw new ReferenceError('Queue Underflow');
+  dequeue(): any | null  {
+    // return null if queue is empty
+    if (this.isEmpty()) {
+      return null;
     }
 
-    // a queuue is a FIFO data type: First In First Out
-    // return first item from queue
-    return this[queue].shift();
-  }
-
-  /**
-   * Checks if the Queue has the item enqueued
-   * @param  {*}  item      The <DataType> to search the Queue for
-   * @return {Boolean}      Boolean representing if search item was found
-   */
-  has(item) {
-    // Brute Force Search through queue to find item
-    // TODO: perhaps sort and to a Binary Search
-    for (let index = 0; index < this.size; index++) {
-      if (item === this[queue][index]) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Looks into the Queue to return the first item
-   * @return {*} The <DataType> that is next in line to be removed
-   */
-  peek() {
-    // Throw error if attempting to peek into an empty queue
-    if(this.isEmpty()) {
-      throw new ReferenceError('Queue Underflow');
-    }
-
-    // return next item in queue
-    return this[queue][0];
-  }
-
-  /**
-   * Empties the Queue
-   * @return {Queue}  The Queue instance for chaining
-   */
-  clear() {
-    // remove items from queue
-    this[queue].length = 0;
-
-    // return instance for chaining
-    return this;
-  }
-
-  /**
-   * Returns a Boolean value whether Queue is empty
-   * @return {Boolean} Is or Is Not empty
-   */
-  isEmpty() {
-    return this[queue].length < 1;
-  }
-
-  /**
-   * Iterates over Queue and performs supplied `callback` with (optional) `context`
-   * @param  {Function} callback The function to invoke on each item in Queue
-   * @param  {Object}   context  The context, or `this`, of the `callback`
-   */
-  forEach(callback, context) {
-    for (const item of this) {
-      callback.apply(context, [item, this]);
-    }
+    // non null assertion as isEmpty() would handle if head was null
+    // return value of deleted node
+    const deletedNode = this.linkedList.deleteHead()!;
+    return deletedNode.value;
   }
 
   /**
    * Returns a String Representation of Queue
-   * @return {String} The representation of the Queue as a String
+   * @param   {CustomToStringFunction}  toStringImplementation  Custom toString method for LinkedList
+   * @return  {string}                                          String representation of the Queue
    */
-  toString() {
-    let outputString = '';
-
-    // iterate through queue and append to output string
-    for (let index = 0; index < this.size; index++) {
-      outputString += `${this[queue][index]},`;
-    }
-
-    // trim trailing comma from output string
-    return outputString.slice(0,-1);
-  }
-
-  /**
-   * The GeneratorFunction/Iterator Factory of the internal Queue Symbol
-   * used to keep the internal data storage `protected`
-   */
-  *[Symbol.iterator]() {
-    for (let index = 0; index < this.size; index++) {
-      yield this[queue][index];
-    }
+  toString(toStringImplementation?: CustomToStringFunction): string {
+    return this.linkedList.toString(toStringImplementation)
   }
 }
-
-export default Queue;

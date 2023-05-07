@@ -1,11 +1,30 @@
-import LinkedList from './index';
+import LinkedList, { CustomFindOptions } from './index';
 import ListNode, { CustomToStringFunction } from './ListNode';
 
 describe('LinkedList', () => {
+  interface MockType {
+    value: number;
+    label: string;
+  };
+
   const mockValue1 = 1;
   const mockValue2 = 2;
   const mockValue3 = 3;
+
   const mockInsertValue = 'Foo!'
+
+  const mockReferential1: MockType = {
+    value: 1,
+    label: 'Foo!!!',
+  };
+  const mockReferential2: MockType = {
+    value: 2,
+    label: 'Testing...',
+  };
+  const mockReferential3: MockType = {
+    value: 3,
+    label: 'Spoon!',
+  };
 
   test('LinkedList constructor should create an empty LinkedList', () => {
     const linkedList = new LinkedList();
@@ -259,13 +278,87 @@ describe('LinkedList', () => {
     expect(linkedList.tail).toBeNull();
   });
 
-  test.todo('LinkedList `find` should find node by value');
+  test('LinkedList `find` should return null when LinkedList is not initialized', () => {
+    const linkedList = new LinkedList();
 
-  test.todo('LinkedList `find` should find node by callback');
+    const findObj: CustomFindOptions = {
+      value: 'some value not in list',
+    };
 
-  test.todo('LinkedList `find` should find node by means of custom compare function');
+    const foundNode: ListNode | null = linkedList.find(findObj)
 
-  test.todo('LinkedList `find` should find preferring callback over compare function');
+    expect(foundNode).toBeNull();
+  });
+
+  test('LinkedList `find` should find node by value', () => {
+    const linkedList = new LinkedList();
+
+    linkedList
+      .append(mockValue1)
+      .append(mockValue2)
+      .append(mockValue3);
+
+    const findObj: CustomFindOptions = {
+      value: mockValue2,
+    };
+
+    const foundNode: ListNode | null = linkedList.find(findObj)
+
+    expect(foundNode).toBeDefined();
+    expect(foundNode?.value).toBe(mockValue2);
+  });
+
+  test('LinkedList `find` should return null when find by value is not found', () => {
+    const linkedList = new LinkedList();
+
+    linkedList
+      .append(mockValue1)
+      .append(mockValue2)
+      .append(mockValue3);
+
+    const findObj: CustomFindOptions = {
+      value: 'some value not in list',
+    };
+
+    const foundNode: ListNode | null = linkedList.find(findObj)
+
+    expect(foundNode).toBeNull();
+  });
+
+  test('LinkedList `find` should find node by callback', () => {
+    const linkedList = new LinkedList();
+
+    linkedList
+      .append(mockReferential1)
+      .append(mockReferential2)
+      .append(mockReferential3);
+
+    const findObj: CustomFindOptions = {
+      findCallback: (nodeValue: MockType) => nodeValue.label === mockReferential2.label,
+    };
+
+    const foundNode: ListNode | null = linkedList.find(findObj)
+
+    expect(foundNode).toBeDefined();
+    expect(foundNode?.value.label).toBe(mockReferential2.label);
+    expect(foundNode?.value.value).toBe(mockReferential2.value);
+  });
+
+  test('LinkedList `find` should return null when find by callback is not found', () => {
+    const linkedList = new LinkedList();
+
+    linkedList
+      .append(mockReferential1)
+      .append(mockReferential2);
+
+    const findObj: CustomFindOptions = {
+      findCallback: (nodeValue: MockType) => nodeValue.label === mockReferential3.label,
+    };
+
+    const foundNode: ListNode | null = linkedList.find(findObj)
+
+    expect(foundNode).toBeNull();
+  });
 
   test('LinkedList `reverse` Should reverse LinkedList', () => {
     const expectedOriginalString = `${mockValue1}, ${mockValue2}, ${mockValue3}`;
@@ -335,23 +428,6 @@ describe('LinkedList', () => {
   });
 
   test('LinkedList `toString` should return a string representation of referential typed LinkedList', () => {
-    interface MockType {
-      value: number;
-      label: string;
-    };
-
-    const mockReferential1: MockType = {
-      value: 1,
-      label: 'Foo!!!',
-    };
-    const mockReferential2: MockType = {
-      value: 2,
-      label: 'Testing...',
-    };
-    const mockReferential3: MockType = {
-      value: 3,
-      label: 'Spoon!',
-    };
     const linkedList = new LinkedList();
 
     linkedList

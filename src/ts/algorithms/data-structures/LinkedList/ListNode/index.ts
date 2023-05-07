@@ -1,4 +1,9 @@
 
+/**`
+ * CustomToStringFunction describes the callback function
+ * to be invoked on the ListNode to provide custom string
+ * representation of the ListNode
+*/
 export interface CustomToStringFunction { (nodeValue: any): string }
 
 /**
