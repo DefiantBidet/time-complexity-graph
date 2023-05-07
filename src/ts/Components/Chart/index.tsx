@@ -62,11 +62,12 @@ export default function Chart({
     >
       <Box
         ref={svgWrapperRef}
+        id="chart-background-gradient"
         style={{
           position: 'absolute',
         }}
       >
-        <svg id="chart-background" className='chart-bg' role='img'>
+        <svg className='chart-bg' role='img'>
           <use xlinkHref='#chart-bg'></use>
         </svg>
       </Box>
@@ -74,7 +75,7 @@ export default function Chart({
         <Line type="natural" dataKey="timeValue" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
         <YAxis label={{ value: 'Execution Time', angle: -90, position: 'Left' }} tickFormatter={emptyStringFormatter} />
-        <XAxis label={{ value: 'Iteration Count', offset: 0, position: 'Bottom' }} tickFormatter={emptyStringFormatter} />
+        <XAxis label={{ value: 'Run Count', offset: 0, position: 'Bottom' }} tickFormatter={emptyStringFormatter} />
       </LineChart>
     </Box>
   );

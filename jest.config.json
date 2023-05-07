@@ -11,7 +11,7 @@
     "@testing-library/user-event"
   ],
   "testEnvironment": "jsdom",
-  "testRegex": "\\.spec\\.tsx",
+  "testRegex": "\\.spec\\.tsx?",
   "transform": {
     "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
   }
